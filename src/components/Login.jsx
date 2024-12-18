@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../assets/images/Logo.png';
 import FloatingLabelInput from './FloatingLabelInput';  
-
+ 
 export const Login = () => {
     return (
         <div>
