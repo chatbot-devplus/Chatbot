@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../assets/images/Logo.png';
 import FloatingLabelInput from './FloatingLabelInput';  
  
-export const Login = () => {
+const LoginComponent = () => {
     return (
         <div>
             <div className="flex items-center justify-center">
@@ -12,7 +12,7 @@ export const Login = () => {
                     className="w-20"
                 />
             </div>
-            <h1 className="text-gray-900 pb-5 text-bold">Create your account</h1>
+            <h1 className="text-gray-900 pb-5 text-4xl text-bold text-center">Create your account</h1>
             <div className="relative float-label-input">
                 <FloatingLabelInput />  
             </div>
@@ -22,7 +22,7 @@ export const Login = () => {
                 Continue
             </button>
 
-            <span className="text-gray-900 mb-3">
+            <span className="text-gray-900 mb-3 ">
                 Already have an account? 
                 <a href="#" className="text-[#10A37F] font-bold"> Login</a>
             </span>
@@ -63,3 +63,4 @@ export const Login = () => {
         </div>  
     );
 };
+export default LoginComponent;
