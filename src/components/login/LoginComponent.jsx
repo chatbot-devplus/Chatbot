@@ -1,10 +1,16 @@
 import React from 'react';
-import Logo from '../assets/images/Logo.png';
+import Logo from '../../assets/Logo.png';
 import FloatingLabelInput from './FloatingLabelInput';  
  
 const LoginComponent = () => {
     return (
-        <div>
+        <div  style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <div className='text-center'>
             <div className="flex items-center justify-center">
                 <img 
                     src={Logo} 
@@ -61,6 +67,7 @@ const LoginComponent = () => {
                 <span className="text-gray-900 font-medium"> Sign in with Facebook</span>
             </button>
         </div>  
+        </div>
     );
 };
 export default LoginComponent;

@@ -1,6 +1,6 @@
-import Login from "../pages/Login";
-import Home from "../pages/Home";
-import NotFound from "../pages/NotFound";
+import Login from "../components/login/LoginComponent";
+import NotFound from "../components/notfound/NotFound";
+import Main from "../components/main/Main";
 
 export const routes =[
     {
@@ -10,7 +10,7 @@ export const routes =[
     },
     {
         path:'/',
-        page: Home,
+        page: Main,
         isShowSideBar: true,
     },
     {
