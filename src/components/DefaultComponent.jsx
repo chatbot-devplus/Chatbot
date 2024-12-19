@@ -8,7 +8,6 @@ const DefaultComponent = ({ children }) => {
       <Col
         span={5}
         style={{
-            backgroundColor:'#ccc',
           height: '100%',
           overflowY: 'auto', // Cuộn độc lập cho Sidebar
         }}
