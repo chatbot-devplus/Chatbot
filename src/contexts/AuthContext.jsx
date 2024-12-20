@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const getUser = async () => {
       const { data } = await supabase.auth.getSession();
       if (data) {
-        setUser(data.session.user);
+        setUser(data.session.user.user_metadata);
       }
     };
     const { data: subscription } = supabase.auth.onAuthStateChange(

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import Logo from "../assets/images/Logo.png";
+import Logo from "../../assets/Logo.png";
 import FloatingLabelInput from "./FloatingLabelInput";
-import { supabase } from "../utils/supabase";
+import { supabase } from "../../utils/supabase.js";
 
-export const LoginComponent = () => {
+const LoginComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -37,7 +37,7 @@ export const LoginComponent = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="max-w-md mx-auto p-6 pt-[200px]">
       <div className="flex items-center justify-center">
         <img src={Logo} alt="Centered Image" className="w-20" />
       </div>
@@ -74,14 +74,9 @@ export const LoginComponent = () => {
       <button
         onClick={handleLogin}
         disabled={loading}
-        className={`text-gray-900 bg-white border border-gray-300 
-                    font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 w-full 
-                    flex items-center justify-center transition 
-                    ${
-                      loading
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:bg-gray-100"
-                    }`}
+        className={`text-gray-900 bg-white border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 w-full flex items-center justify-center transition ${
+          loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"
+        }`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -124,12 +119,10 @@ export const LoginComponent = () => {
         >
           <path d="M22.675 0h-21.35C.595 0 0 .593 0 1.326v21.348C0 23.407.595 24 1.325 24h11.495v-9.294H9.69v-3.622h3.13V8.413c0-3.1 1.892-4.788 4.657-4.788 1.324 0 2.462.099 2.794.143v3.24l-1.917.001c-1.504 0-1.795.715-1.795 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.325-.593 1.325-1.326V1.326C24 .593 23.405 0 22.675 0z" />
         </svg>
-        <span className="text-gray-900 font-medium">
-          {" "}
-          Sign in with Facebook
-        </span>
+        <span className="text-gray-900 font-medium"> Sign in with Facebook</span>
       </button>
     </div>
   );
 };
+
 export default LoginComponent;

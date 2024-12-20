@@ -41,7 +41,7 @@ const ProtectedRoute = ({ children }) => {
     };
   }, [setUser]);
 
-   console.log("Current state:", user);
+   console.log("Current state:", user?.user_metadata);
 
   if (loading) {
     return <div className="text-black">Loading...</div>;
