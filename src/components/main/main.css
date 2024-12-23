@@ -111,7 +111,15 @@
 .result-title{
     margin: 40px 0px;
     display: flex;
-    align-items: center;
+    align-items: end;
+    align-items: end;
+    justify-content: flex-end;
+    gap: 20px;
+}
+.result-title img {
+    display: flex;
+    align-items: start;
+    justify-content: flex-end; /* Căn phải toàn bộ nội dung */
     gap: 20px;
 }
 .result img{
@@ -154,3 +162,4 @@ animation: loader 4s infinite linear;
     font-weight: 300px;
     line-height: 1.8;
 }
+
