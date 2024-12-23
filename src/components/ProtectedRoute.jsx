@@ -16,15 +16,11 @@ const ProtectedRoute = ({ children }) => {
         const sessionUser = data?.session?.user;
         if (sessionUser) {
           setUser(sessionUser);
-          localStorage.setItem("access_token", data.session.access_token);
         } else {
           setUser(null);
-          localStorage.removeItem("access_token");
         }
       } catch (error) {
-        console.error("Error fetching initial session:", error.message);
         setUser(null);
-        localStorage.removeItem("access_token");
       }
     };
 
@@ -39,9 +35,8 @@ const ProtectedRoute = ({ children }) => {
     return () => {
       isMounted = false;
     };
-  }, [setUser]);
+  }, []);
 
-   console.log("Current state:", user?.user_metadata);
 
   if (loading) {
     return <div className="text-black">Loading...</div>;
