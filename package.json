@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.5.2",
-    "@google/generative-ai": "^0.2.1",
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.47.10",
     "antd": "^5.22.5",
     "chatbox": "file:",
+    "dotenv": "^16.4.7",
     "flowbite-react": "^0.10.2",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.0.2"
