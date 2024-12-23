@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { assets } from "../../assets/assets";
 import "./main.css";
 import { Context } from "../../context/Context";
+import { useAuth } from "../../contexts/AuthContext";
+
 const Main = () => {
 	const {
 		onSent,
@@ -12,6 +14,8 @@ const Main = () => {
 		setInput,
 		input,
 	} = useContext(Context);
+	
+	const {user} = useAuth();
 
     const handleCardClick = (promptText) => {
 			setInput(promptText);
@@ -20,14 +24,14 @@ const Main = () => {
 		<div className="main" >
 			<div className="nav">
 				<p>ChatGPT FAKE</p>
-				<img src={assets.user} alt="" />
+				<img src={user.picture} alt="avatar" />
 			</div>
 			<div className="main-container">
 				{!showResults ? (
 					<>
 						<div className="greet">
 							<p>
-								<span>Hello , Dev </span>
+								<span>Hello , {user.full_name} </span>
 							</p>
 							<p>How Can i Help You Today?</p>
 						</div>
