@@ -8,14 +8,15 @@ async function runChat(prompt) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
+  const generationConfig = {
+    maxOutputTokens: 500,
+  };
+  
   const chat = model.startChat({
-    history: [
-    ], 
-    generationConfig : {
-      maxOutputTokens:500,
-  },
+    history: [],
+    generationConfig,
   });
-
+  
   const result = await chat.sendMessage(prompt);
   const response = result.response;
   console.log(response.text());
