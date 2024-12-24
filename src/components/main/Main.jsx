@@ -3,7 +3,8 @@ import { assets } from "../../assets/assets";
 import "./main.css";
 import { Context } from "../../context/Context";
 import { useAuth } from "../../contexts/AuthContext";
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 const Main = () => {
 	const {
 		onSent,
@@ -81,8 +82,8 @@ const Main = () => {
 				) : (
 					<div className="result">
 						<div className="result-title">
-							<img src={assets.user} alt="" />
 							<p>{recentPrompt}</p>
+							<img src={user.picture} alt="" />
 						</div>
 						<div className="result-data">
 							<img src={assets.gemini_icon} alt="" />
@@ -93,7 +94,9 @@ const Main = () => {
 									<hr />
 								</div>
 							) : (
-								<p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+								<ReactMarkdown remarkPlugins={[remarkGfm]} className="content">
+								  {resultData}
+								</ReactMarkdown>
 							)}
 						</div>
 					</div>
@@ -109,7 +112,7 @@ const Main = () => {
 							type="text"
 							placeholder="Enter the Prompt Here"
 						/>
-						<div>
+						<div className="chat-container">
 							<img src={assets.gallery_icon} alt="" />
 							<img src={assets.mic_icon} alt="" />
 							<img
