@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/Logo.png";
 import FloatingLabelInput from "./FloatingLabelInput";
 import { supabase } from "../../utils/supabase.js";

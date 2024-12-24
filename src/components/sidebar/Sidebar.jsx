@@ -32,7 +32,7 @@ const Sidebar = () => {
 						<p className="recent-title">Recent</p>
 						{prevPrompts.map((item, index) => {
 							return (
-								<div onClick={()=>{
+								<div key={index} onClick={()=>{
                                     loadPreviousPrompt(item)
                                 }} className="recent-entry">
 									<img src={assets.message_icon} alt="" />
