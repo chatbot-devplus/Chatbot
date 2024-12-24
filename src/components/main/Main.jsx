@@ -3,7 +3,8 @@ import { assets } from "../../assets/assets";
 import "./main.css";
 import { Context } from "../../context/Context";
 import { useAuth } from "../../contexts/AuthContext";
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 const Main = () => {
 	const {
 		onSent,
@@ -93,7 +94,9 @@ const Main = () => {
 									<hr />
 								</div>
 							) : (
-								<p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+								<ReactMarkdown remarkPlugins={[remarkGfm]} className="content">
+								  {resultData}
+								</ReactMarkdown>
 							)}
 						</div>
 					</div>

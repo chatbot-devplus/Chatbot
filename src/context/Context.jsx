@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import runChat from "../config/Gemini";
-
+import remarkGfm from 'remark-gfm';
 export const Context = createContext();
 
 const ContextProvider = (props) => {
@@ -16,71 +16,61 @@ const ContextProvider = (props) => {
         setLoading(false);
         setShowResults(false)
     }
-
 	const onSent = async (prompt) => {
-		setResultData("");
-		setLoading(true);
-		setShowResults(true);
-		let response;
-	
-		if (prompt !== undefined) {
-			response = await runChat(prompt);
-			setRecentPrompt(prompt);
-		} else {
-			setPrevPrompts(prev => [...prev, input]);
-			setRecentPrompt(input);
-			response = await runChat(input);
-		}
-	
-		try {
-			if (response.includes("|")) {
-				const rows = response.trim().split("\n");
-				let tableHTML = "<table border='5' style='border: 2px solid black; border-collapse: collapse; width: 100%; text-align: center;margin:10px;'>";
-	
+	setResultData("");
+	setLoading(true);
+	setShowResults(true);
+	let response;
+
+	if (prompt !== undefined) {
+		response = await runChat(prompt);
+		setRecentPrompt(prompt);
+	} else {
+		setPrevPrompts((prev) => [...prev, input]);
+		setRecentPrompt(input);
+		response = await runChat(input);
+	}
+
+	try {
+		if (response.includes("|")) {
+			const isTable = response.includes("|") && response.split("\n").some((row) => row.split("|").length > 1);
+			if (isTable) {
+				const rows = response.trim().split("\n").filter((row) => row.trim() !== "");
+				let markdownTable = "";
+		
 				rows.forEach((row, index) => {
-					const columns = row.split("|").map(col => col.trim()); 
+					const columns = row.split("|").map((col) => col.trim()).filter((col) => col !== "");
 					if (index === 0) {
-						tableHTML += "<thead><tr>";
-						columns.forEach(col => {
-							if (col) tableHTML += `<th style="border: 1px solid black;text-align: center;margin:10px;">${col}</th>`;
-						});
-						tableHTML += "</tr></thead><tbody>";
-					} else if (index > 1) {
-						tableHTML += "<tr>";
-						columns.forEach(col => {
-							if (col) tableHTML += `<td style="border: 1px solid black;text-align: center;margin:10px;">${col}</td>`;
-						});
-						tableHTML += "</tr>";
+						markdownTable += `| ${columns.join(" | ")} |\n`;
+					} else if (columns.length > 1) {
+						markdownTable += `| ${columns.join(" | ")} |\n`;
 					}
 				});
-	
-				tableHTML += "</tbody></table>";
-				setResultData(tableHTML);
+				setResultData(markdownTable);}
+		} else {
+		let responseArray = response.split("**");
+		let markdownResponse = "";
+
+		for (let i = 0; i < responseArray.length; i++) {
+			if (i % 2 === 1) {
+			markdownResponse += `**${responseArray[i]}**`;
 			} else {
-				let responseArray = response.split("**");
-				let newResponse = "";
-	
-				for (let i = 0; i < responseArray.length; i++) {
-					if (i === 0 || i % 2 !== 1) {
-						newResponse += responseArray[i];
-					} else {
-						newResponse += "<b>" + responseArray[i] + "</b>";
-					}
-				}
-				newResponse = newResponse.replace(/(\d+\.\s[^.]+?)(?=\d+\.\s|$)/g, "<li>$1</li>");
-				newResponse = "<ul>" + newResponse + "</ul>";
-				newResponse = newResponse.split("*").join("<br/>");
-				newResponse = newResponse.replace(/<\/table>/g, "</table><br/>");
-				newResponse = newResponse.replace(/<\/ul>/g, "</ul><br/>");
-				setResultData(newResponse);
+			markdownResponse += responseArray[i];
 			}
-		} catch (error) {
-			console.error("Error while running chat:", error);
-		} finally {
-			setLoading(false);
-			setInput("");
 		}
+		markdownResponse = markdownResponse.replace(/(\d+\.\s[^.]+?)(?=\d+\.\s|$)/g, "- $1");
+		setResultData(markdownResponse);
+		}
+	} catch (error) {
+		console.error("Error while running chat:", error);
+	} finally {
+		setLoading(false);
+		setInput("");
+	}
 	};
+
+
+	
 	const contextValue = {
 		prevPrompts,
 		setPrevPrompts,
