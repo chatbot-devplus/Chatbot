@@ -1,6 +1,5 @@
 import { createContext, useState } from 'react'
 import runChat from '../config/Gemini'
-
 export const Context = createContext()
 
 const ContextProvider = (props) => {
@@ -11,21 +10,16 @@ const ContextProvider = (props) => {
   const [loading, setLoading] = useState(false)
   const [resultData, setResultData] = useState('')
 
-  const delayPara = (index, nextWord) => {
-    setTimeout(function () {
-      setResultData((prev) => prev + nextWord)
-    }, 10 * index)
-  }
   const newChat = () => {
     setLoading(false)
     setShowResults(false)
   }
-
   const onSent = async (prompt) => {
     setResultData('')
     setLoading(true)
     setShowResults(true)
     let response
+
     if (prompt !== undefined) {
       response = await runChat(prompt)
       setRecentPrompt(prompt)
@@ -36,24 +30,45 @@ const ContextProvider = (props) => {
     }
 
     try {
-      let responseArray = response.split('**')
-      let newResponse = ''
-      for (let i = 0; i < responseArray.length; i++) {
-        if (i === 0 || i % 2 !== 1) {
-          newResponse += responseArray[i]
-        } else {
-          newResponse += '<b>' + responseArray[i] + '</b>'
+      if (response.includes('|')) {
+        const isTable =
+          response.includes('|') && response.split('\n').some((row) => row.split('|').length > 1)
+        if (isTable) {
+          const rows = response
+            .trim()
+            .split('\n')
+            .filter((row) => row.trim() !== '')
+          let markdownTable = ''
+
+          rows.forEach((row, index) => {
+            const columns = row
+              .split('|')
+              .map((col) => col.trim())
+              .filter((col) => col !== '')
+            if (index === 0) {
+              markdownTable += `| ${columns.join(' | ')} |\n`
+            } else if (columns.length > 1) {
+              markdownTable += `| ${columns.join(' | ')} |\n`
+            }
+          })
+          setResultData(markdownTable)
         }
-      }
-      let newResponse2 = newResponse.split('*').join('<br/>')
-      let newResponseArray = newResponse2.split('')
-      for (let i = 0; i < newResponseArray.length; i++) {
-        const nextWord = newResponseArray[i]
-        delayPara(i, nextWord + '')
+      } else {
+        let responseArray = response.split('**')
+        let markdownResponse = ''
+
+        for (let i = 0; i < responseArray.length; i++) {
+          if (i % 2 === 1) {
+            markdownResponse += `**${responseArray[i]}**`
+          } else {
+            markdownResponse += responseArray[i]
+          }
+        }
+        markdownResponse = markdownResponse.replace(/(\d+\.\s[^.]+?)(?=\d+\.\s|$)/g, '- $1')
+        setResultData(markdownResponse)
       }
     } catch (error) {
       console.error('Error while running chat:', error)
-      // Handle error appropriately
     } finally {
       setLoading(false)
       setInput('')
