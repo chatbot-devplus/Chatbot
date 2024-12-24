@@ -1,47 +1,40 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { supabase } from "../utils/supabase";
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../utils/supabase'
 
-const AuthContext = createContext();
+const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+    const savedUser = localStorage.getItem('user')
+    return savedUser ? JSON.parse(savedUser) : null
+  })
 
   useEffect(() => {
     const getUser = async () => {
-      const { data } = await supabase.auth.getSession();
+      const { data } = await supabase.auth.getSession()
       if (data?.session?.user) {
-        const userMetadata = data.session.user.user_metadata;
-        setUser(userMetadata);
-        localStorage.setItem("user", JSON.stringify(userMetadata)); 
+        const userMetadata = data.session.user.user_metadata
+        setUser(userMetadata)
+        localStorage.setItem('user', JSON.stringify(userMetadata))
       }
-    };
+    }
 
-    const { data: subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        const userMetadata = session?.user?.user_metadata || null;
-        setUser(userMetadata);
-        if (userMetadata) {
-          localStorage.setItem("user", JSON.stringify(userMetadata)); 
-        } else {
-          localStorage.removeItem("user");
-        }
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      const userMetadata = session?.user?.user_metadata || null
+      setUser(userMetadata)
+      if (userMetadata) {
+        localStorage.setItem('user', JSON.stringify(userMetadata))
+      } else {
+        localStorage.removeItem('user')
       }
-    );
+    })
 
-    getUser();
+    getUser()
 
-    return () => subscription.subscription.unsubscribe();
-  }, []);
+    return () => subscription.subscription.unsubscribe()
+  }, [])
 
-  return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>
+}
 
-
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)

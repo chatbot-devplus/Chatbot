@@ -1,52 +1,52 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { supabase } from "../utils/supabase";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { supabase } from '../utils/supabase'
 
 const ProtectedRoute = ({ children }) => {
-  const { user, setUser } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const { user, setUser } = useAuth()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchInitialSession = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession();
-        if (error) throw error;
+        const { data, error } = await supabase.auth.getSession()
+        if (error) throw error
 
-        const sessionUser = data?.session?.user;
+        const sessionUser = data?.session?.user
         if (sessionUser) {
-          setUser(sessionUser);
+          setUser(sessionUser)
         } else {
-          setUser(null);
+          setUser(null)
         }
       } catch (error) {
-        setUser(null);
+        setUser(null)
+        throw error
       }
-    };
+    }
 
-    let isMounted = true;
+    let isMounted = true
     const loadSession = async () => {
-      await fetchInitialSession();
-      if (isMounted) setLoading(false);
-    };
+      await fetchInitialSession()
+      if (isMounted) setLoading(false)
+    }
 
-    loadSession();
+    loadSession()
 
     return () => {
-      isMounted = false;
-    };
-  }, []);
-
+      isMounted = false
+    }
+  }, [])
 
   if (loading) {
-    return <div className="text-black">Loading...</div>;
+    return <div className="text-black">Loading...</div>
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />
   }
 
-  return children;
-};
+  return children
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute
