@@ -4,17 +4,29 @@ import { supabase } from '../utils/supabase'
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user')
+    return savedUser ? JSON.parse(savedUser) : null
+  })
 
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getSession()
-      if (data) {
-        setUser(data.session.user.user_metadata)
+      if (data?.session?.user) {
+        const userMetadata = data.session.user.user_metadata
+        setUser(userMetadata)
+        localStorage.setItem('user', JSON.stringify(userMetadata))
       }
     }
+
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null)
+      const userMetadata = session?.user?.user_metadata || null
+      setUser(userMetadata)
+      if (userMetadata) {
+        localStorage.setItem('user', JSON.stringify(userMetadata))
+      } else {
+        localStorage.removeItem('user')
+      }
     })
 
     getUser()
