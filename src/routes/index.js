@@ -1,24 +1,24 @@
-import Login from "../components/login/LoginComponent";
-import NotFound from "../components/notfound/NotFound";
-import Main from "../components/main/Main";
+import Login from '../components/login/LoginComponent'
+import Main from '../components/main/Main'
+import NotFound from '../components/notfound/NotFound'
 
 export const routes = [
   {
-    path: "/login",
+    path: '/login',
     isShowSideBar: false,
     page: Login,
-    protected: false,
+    protected: false
   },
   {
-    path: "/",
+    path: '/',
     page: Main,
     isShowSideBar: true,
     // chỉ định route này cần login mới vào được
-    protected: true,
+    protected: true
   },
   {
-    path: "*",
+    path: '*',
     isShowSideBar: false,
-    page: NotFound,
-  },
-];
+    page: NotFound
+  }
+]

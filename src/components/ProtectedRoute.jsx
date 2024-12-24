@@ -1,57 +1,57 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { supabase } from "../utils/supabase";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { supabase } from '../utils/supabase'
 
 const ProtectedRoute = ({ children }) => {
-  const { user, setUser } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const { user, setUser } = useAuth()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchInitialSession = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession();
-        if (error) throw error;
+        const { data, error } = await supabase.auth.getSession()
+        if (error) throw error
 
-        const sessionUser = data?.session?.user;
+        const sessionUser = data?.session?.user
         if (sessionUser) {
-          setUser(sessionUser);
-          localStorage.setItem("access_token", data.session.access_token);
+          setUser(sessionUser)
+          localStorage.setItem('access_token', data.session.access_token)
         } else {
-          setUser(null);
-          localStorage.removeItem("access_token");
+          setUser(null)
+          localStorage.removeItem('access_token')
         }
       } catch (error) {
-        console.error("Error fetching initial session:", error.message);
-        setUser(null);
-        localStorage.removeItem("access_token");
+        console.error('Error fetching initial session:', error.message)
+        setUser(null)
+        localStorage.removeItem('access_token')
       }
-    };
+    }
 
-    let isMounted = true;
+    let isMounted = true
     const loadSession = async () => {
-      await fetchInitialSession();
-      if (isMounted) setLoading(false);
-    };
+      await fetchInitialSession()
+      if (isMounted) setLoading(false)
+    }
 
-    loadSession();
+    loadSession()
 
     return () => {
-      isMounted = false;
-    };
-  }, [setUser]);
+      isMounted = false
+    }
+  }, [setUser])
 
-   console.log("Current state:", user?.user_metadata);
+  console.log('Current state:', user?.user_metadata)
 
   if (loading) {
-    return <div className="text-black">Loading...</div>;
+    return <div className="text-black">Loading...</div>
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />
   }
 
-  return children;
-};
+  return children
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute

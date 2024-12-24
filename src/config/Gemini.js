@@ -1,26 +1,24 @@
-import {
-  GoogleGenerativeAI,
-} from "@google/generative-ai";
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const MODEL_NAME = "gemini-1.0-pro";
-const API_KEY = import.meta.env.VITE_DOTENV_KEY;
+const MODEL_NAME = 'gemini-1.0-pro'
+const API_KEY = import.meta.env.VITE_DOTENV_KEY
 async function runChat(prompt) {
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+  const genAI = new GoogleGenerativeAI(API_KEY)
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME })
 
   const generationConfig = {
-    maxOutputTokens: 500,
-  };
-  
+    maxOutputTokens: 500
+  }
+
   const chat = model.startChat({
     history: [],
-    generationConfig,
-  });
-  
-  const result = await chat.sendMessage(prompt);
-  const response = result.response;
-  console.log(response.text());
-  return response.text();
+    generationConfig
+  })
+
+  const result = await chat.sendMessage(prompt)
+  const response = result.response
+  console.log(response.text())
+  return response.text()
 }
 
- export default runChat;
+export default runChat
