@@ -1,18 +1,17 @@
-import Sidebar from "./components/sidebar/Sidebar"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { routes } from "./routes";
-import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute'
+import Sidebar from './components/sidebar/Sidebar'
+import { AuthProvider } from './contexts/AuthContext'
+import { routes } from './routes'
 
 const App = () => {
   return (
     <AuthProvider>
-
       <Router>
         <Routes>
-          {routes.map((route)=>{
+          {routes.map((route) => {
             const Page = route.page
-            
+
             return (
               <Route
                 key={route.path}
@@ -20,27 +19,25 @@ const App = () => {
                 element={
                   route.protected ? (
                     <ProtectedRoute>
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
                         {route.isShowSideBar && <Sidebar />}
                         <Page />
                       </div>
                     </ProtectedRoute>
                   ) : (
-                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                       {route.isShowSideBar && <Sidebar />}
                       <Page />
                     </div>
                   )
                 }
               />
-            );
+            )
           })}
-          
         </Routes>
       </Router>
     </AuthProvider>
-)}
+  )
+}
 
-export default App;
+export default App

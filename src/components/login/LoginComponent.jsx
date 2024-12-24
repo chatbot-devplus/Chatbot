@@ -1,40 +1,38 @@
-import React, { useState } from "react";
-import Logo from "../../assets/Logo.png";
-import FloatingLabelInput from "./FloatingLabelInput";
-import { supabase } from "../../utils/supabase.js";
+import { useState } from 'react'
+import Logo from '../../assets/Logo.png'
+import { supabase } from '../../utils/supabase.js'
+import FloatingLabelInput from './FloatingLabelInput'
 
 const LoginComponent = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleLogin = async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider: 'google',
         options: {
-          redirectTo: "http://localhost:5173/",
-        },
-      });
+          redirectTo: 'http://localhost:5173/'
+        }
+      })
 
       if (error) {
-        console.error("Login Error:", error);
-        setError(error.message || "An error occurred during login");
-        return;
+        console.error('Login Error:', error)
+        setError(error.message || 'An error occurred during login')
+        return
       }
 
-      console.log("Login Success:", data);
+      console.log('Login Success:', data)
     } catch (err) {
-      console.error("Unexpected login error:", err);
-      setError(
-        err.message || "An unexpected error occurred. Please try again."
-      );
+      console.error('Unexpected login error:', err)
+      setError(err.message || 'An unexpected error occurred. Please try again.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-md mx-auto p-6 pt-[200px]">
@@ -58,7 +56,7 @@ const LoginComponent = () => {
 
       <button
         type="button"
-        className="mb-3 focus:outline-none text-white bg-[#10A37F] hover:bg-[#0E8D6F] focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 me-2 mb-2 dark:bg-[#0E8D6F] dark:hover:bg-[#0C7B5E] dark:focus:ring-[#085F4A]"
+        className="mb-3 focus:outline-none text-white bg-[#10A37F] hover:bg-[#0E8D6F] focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 me-2 dark:bg-[#0E8D6F] dark:hover:bg-[#0C7B5E] dark:focus:ring-[#085F4A]"
       >
         Continue
       </button>
@@ -75,15 +73,10 @@ const LoginComponent = () => {
         onClick={handleLogin}
         disabled={loading}
         className={`text-gray-900 bg-white border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 w-full flex items-center justify-center transition ${
-          loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"
+          loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
         }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 48 48"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
           <path
             fill="#4285F4"
             d="M24 9.5c3.34 0 6.35 1.16 8.74 3.08l6.52-6.52C35.04 2.12 29.92 0 24 0 14.64 0 6.63 5.36 2.89 13.13l7.89 6.13C12.13 12.67 17.5 9.5 24 9.5z"
@@ -103,7 +96,7 @@ const LoginComponent = () => {
           <path fill="none" d="M0 0h48v48H0z" />
         </svg>
         <span className="text-gray-900 font-medium ml-3">
-          {loading ? "Signing in..." : "Sign in with Google"}
+          {loading ? 'Signing in...' : 'Sign in with Google'}
         </span>
       </button>
 
@@ -122,7 +115,7 @@ const LoginComponent = () => {
         <span className="text-gray-900 font-medium"> Sign in with Facebook</span>
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default LoginComponent;
+export default LoginComponent
