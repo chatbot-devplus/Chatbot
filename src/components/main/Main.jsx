@@ -7,17 +7,16 @@ import { useAuth } from '../../contexts/AuthContext'
 import { Context } from '../../contexts/Context'
 import './main.css'
 const Main = () => {
-  const { onSent, loading, setInput, input, messages } =
-    useContext(Context)
+  const { onSent, loading, setInput, input, messages } = useContext(Context)
   const { user } = useAuth()
- const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null)
 
- useEffect(() => {
-   // Tự động cuộn xuống khi messages thay đổi
-   if (messagesEndRef.current) {
-     messagesEndRef.current.scrollTop = 0
-   }
- }, [messages])
+  useEffect(() => {
+    // Tự động cuộn xuống khi messages thay đổi
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = 0
+    }
+  }, [messages])
 
   const handleCardClick = (promptText) => {
     setInput(promptText)
@@ -141,9 +140,9 @@ const Main = () => {
                 src={assets.send_icon}
                 alt=""
                 onClick={() => {
-                 if (input.trim() !== '' && !loading) {
-                   onSent(input, user.id)
-                 }
+                  if (input.trim() !== '' && !loading) {
+                    onSent(input, user.id)
+                  }
                 }}
               />
             </div>

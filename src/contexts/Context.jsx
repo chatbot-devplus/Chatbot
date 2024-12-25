@@ -10,7 +10,7 @@ const ContextProvider = (props) => {
   const [resultData, setResultData] = useState('')
   const [chat, setChat] = useState(null)
   const [messages, setMessages] = useState([])
-  let currentChatId = null;
+  let currentChatId = null
 
   const newChat = () => {
     setLoading(false)
@@ -35,9 +35,9 @@ const ContextProvider = (props) => {
 
   const onSent = async (prompt, userId) => {
     setInput('')
-    if ( chat ){
+    if (chat) {
       setMessages((prev) => [...prev, { content: prompt, is_user: true }])
-      await saveMessage(prompt, true);
+      await saveMessage(prompt, true)
     } else {
       const { data: newChat, error: newChatError } = await supabase
         .from('chats')
@@ -45,10 +45,10 @@ const ContextProvider = (props) => {
         .select()
         .single()
 
-      if (newChatError) throw newChatError;
-      setChat(newChat);
-      currentChatId = newChat.id;
-      setMessages((prev) => [...prev, { content: prompt, is_user: true }]);
+      if (newChatError) throw newChatError
+      setChat(newChat)
+      currentChatId = newChat.id
+      setMessages((prev) => [...prev, { content: prompt, is_user: true }])
       saveMessage(prompt, true, currentChatId)
     }
 
@@ -59,7 +59,6 @@ const ContextProvider = (props) => {
       response = await runChat(prompt)
       setMessages((prev) => [...prev, { content: response, is_user: false }])
       saveMessage(response, false, currentChatId)
-
     } else {
       setPrevPrompts((prev) => [...prev, input])
       response = await runChat(input)

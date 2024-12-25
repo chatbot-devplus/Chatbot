@@ -6,13 +6,13 @@ import { supabase } from '../../utils/supabase'
 import './sidebar.css'
 const Sidebar = () => {
   const [extended, setExtended] = useState(false)
-  const { newChat, setChat, chat, setMessages } = useContext(Context)
+  const { newChat, setChat, setMessages } = useContext(Context)
   const [chats, setChats] = useState([])
   const { user } = useAuth()
 
   const loadPreviousPrompt = async (chat) => {
     await setChat(chat)
-    fetchMessages (chat.id)
+    fetchMessages(chat.id)
   }
 
   const logout = () => {
@@ -41,15 +41,15 @@ const Sidebar = () => {
     fetchChats()
   }, [extended])
 
-    const fetchMessages = async (chatId) => {
-      const { data } = await supabase
-        .from('messages')
-        .select('*')
-        .eq('chat_id', chatId)
-        .order('created_at', { ascending: true })
-        console.log(data)
-        setMessages(data || [])
-    }
+  const fetchMessages = async (chatId) => {
+    const { data } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('chat_id', chatId)
+      .order('created_at', { ascending: true })
+    console.log(data)
+    setMessages(data || [])
+  }
 
   return (
     <div className="sidebar">
