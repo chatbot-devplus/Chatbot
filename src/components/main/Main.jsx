@@ -1,16 +1,23 @@
 import TextArea from 'antd/es/input/TextArea'
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { assets } from '../../assets/assets'
-import { Context } from '../../contexts/Context'
 import { useAuth } from '../../contexts/AuthContext'
+import { Context } from '../../contexts/Context'
 import './main.css'
 const Main = () => {
-  const { onSent, recentPrompt, showResults, loading, resultData, setInput, input } =
+  const { onSent, loading, setInput, input, messages } =
     useContext(Context)
-
   const { user } = useAuth()
+ const messagesEndRef = useRef(null)
+
+ useEffect(() => {
+   // Tự động cuộn xuống khi messages thay đổi
+   if (messagesEndRef.current) {
+     messagesEndRef.current.scrollTop = 0
+   }
+ }, [messages])
 
   const handleCardClick = (promptText) => {
     setInput(promptText)
@@ -22,7 +29,7 @@ const Main = () => {
         <img src={user.picture} alt="avatar" />
       </div>
       <div className="main-container">
-        {!showResults ? (
+        {messages.length == 0 ? (
           <>
             <div className="greet">
               <p>
@@ -71,24 +78,36 @@ const Main = () => {
           </>
         ) : (
           <div className="result">
-            <div className="result-title">
-              <p>{recentPrompt}</p>
-              <img src={user.picture} alt="" />
-            </div>
-            <div className="result-data">
-              <img src={assets.gemini_icon} alt="" />
-              {loading ? (
+            {loading && (
+              <>
                 <div className="loader">
                   <hr />
                   <hr />
                   <hr />
                 </div>
+                <img src={assets.gemini_icon} alt="" />
+              </>
+            )}
+            {[...messages].reverse().map((message, index) => {
+              return message.is_user ? (
+                <div key={index} className="result-title">
+                  <p className="bg-slate-300 rounded-2xl p-4 whitespace-pre-wrap">
+                    {message.content}
+                  </p>
+                  <img src={user.picture} alt="" />
+                </div>
               ) : (
-                <ReactMarkdown remarkPlugins={[remarkGfm]} className="content">
-                  {resultData}
-                </ReactMarkdown>
-              )}
-            </div>
+                <div key={index} className="result-data">
+                  <img src={assets.gemini_icon} alt="" />
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    className="content bg-pink-300 rounded-2xl p-4"
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+              )
+            })}
           </div>
         )}
 
@@ -98,6 +117,14 @@ const Main = () => {
               className="bg-transparent border-none outline-none text-inherit hover:bg-transparent hover:border-none hover:outline-none focus:bg-transparent focus:border-none focus:outline-none "
               onChange={(e) => {
                 setInput(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault() // Ngăn xuống dòng khi nhấn Enter
+                  if (input.trim() !== '' && !loading) {
+                    onSent(input, user.id)
+                  }
+                }
               }}
               value={input}
               type="text"
@@ -114,7 +141,9 @@ const Main = () => {
                 src={assets.send_icon}
                 alt=""
                 onClick={() => {
-                  onSent()
+                 if (input.trim() !== '' && !loading) {
+                   onSent(input, user.id)
+                 }
                 }}
               />
             </div>

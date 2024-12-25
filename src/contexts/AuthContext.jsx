@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await supabase.auth.getSession()
       if (data?.session?.user) {
         const userMetadata = data.session.user.user_metadata
+        userMetadata.id = data.session.user.id
         setUser(userMetadata)
         localStorage.setItem('user', JSON.stringify(userMetadata))
       }
