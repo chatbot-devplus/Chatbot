@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { assets } from '../../assets/assets'
-import { Context } from '../../context/Context'
+import { Context } from '../../contexts/Context'
 import { useAuth } from '../../contexts/AuthContext'
 import './main.css'
 const Main = () => {

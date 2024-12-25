@@ -14,6 +14,7 @@ import setting_icon from './setting_icon.png'
 import user from './user.jpg'
 import user_icon from './user_icon.png'
 import youtube_icon from './youtube_icon.png'
+import logout from './logout.png'
 
 export const assets = {
   history_icon,
@@ -31,5 +32,6 @@ export const assets = {
   code_icon,
   send_icon,
   gemini_icon,
-  user
+  user,
+  logout
 }

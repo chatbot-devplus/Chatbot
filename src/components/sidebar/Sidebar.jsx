@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
-import { Context } from '../../context/Context'
+import { Context } from '../../contexts/Context'
 import './sidebar.css'
+import { supabase } from '../../utils/supabase'
 const Sidebar = () => {
   const [extended, setExtended] = useState(false)
   const { onSent, prevPrompts, setRecentPrompt, newChat } = useContext(Context)
@@ -9,6 +10,10 @@ const Sidebar = () => {
   const loadPreviousPrompt = async (prompt) => {
     setRecentPrompt(prompt)
     await onSent(prompt)
+  }
+
+  const logout = () => {
+    supabase.auth.signOut()
   }
   return (
     <div className="sidebar">
@@ -53,12 +58,12 @@ const Sidebar = () => {
       </div>
       <div className="bottom">
         <div className="bottom-item recent-entry">
-          <img src={assets.question_icon} alt="" />
-          {extended ? <p>Help desk</p> : null}
-        </div>
-        <div className="bottom-item recent-entry">
           <img src={assets.history_icon} alt="" />
           {extended ? <p>History</p> : null}
+        </div>
+        <div className="bottom-item recent-entry" onClick={logout}>
+          <img src={assets.logout} alt="" />
+          {extended ? <p>Logout</p> : null}
         </div>
         <div className="bottom-item recent-entry">
           <img src={assets.setting_icon} alt="" />
