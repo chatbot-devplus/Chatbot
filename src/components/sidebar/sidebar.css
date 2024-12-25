@@ -9,6 +9,10 @@
 .sidebar .top {
   margin-top: 15px;
 }
+.sidebar .history {
+  max-height: 65vh; /* Giới hạn chiều cao */
+  overflow-y: auto;
+}
 .sidebar img {
   width: 30px;
 }

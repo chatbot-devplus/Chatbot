@@ -121,7 +121,9 @@ const ContextProvider = (props) => {
     loading,
     resultData,
     newChat,
-    messages
+    messages,
+    setMessages,
+    setChat
   }
 
   return <Context.Provider value={contextValue}>{props.children}</Context.Provider>
