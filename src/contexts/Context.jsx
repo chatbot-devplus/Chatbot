@@ -1,32 +1,69 @@
 import { createContext, useState } from 'react'
 import runChat from '../config/Gemini'
+import { supabase } from '../utils/supabase'
 export const Context = createContext()
 
 const ContextProvider = (props) => {
   const [input, setInput] = useState('')
-  const [recentPrompt, setRecentPrompt] = useState('')
   const [prevPrompts, setPrevPrompts] = useState([])
-  const [showResults, setShowResults] = useState(false)
   const [loading, setLoading] = useState(false)
   const [resultData, setResultData] = useState('')
+  const [chat, setChat] = useState(null)
+  const [messages, setMessages] = useState([])
+  let currentChatId = null
 
   const newChat = () => {
     setLoading(false)
-    setShowResults(false)
+    setChat(null)
+    setMessages([])
   }
-  const onSent = async (prompt) => {
-    setResultData('')
+
+  const saveMessage = async (message, is_user, chat_id) => {
+    const { error: messageError } = await supabase
+      .from('messages')
+      .insert([
+        {
+          content: message,
+          is_user: is_user,
+          chat_id: chat ? chat.id : chat_id
+        }
+      ])
+      .select()
+      .single()
+    if (messageError) throw messageError
+  }
+
+  const onSent = async (prompt, userId) => {
+    setInput('')
+    if (chat) {
+      setMessages((prev) => [...prev, { content: prompt, is_user: true }])
+      await saveMessage(prompt, true)
+    } else {
+      const { data: newChat, error: newChatError } = await supabase
+        .from('chats')
+        .insert([{ user_id: userId, name: prompt }])
+        .select()
+        .single()
+
+      if (newChatError) throw newChatError
+      setChat(newChat)
+      currentChatId = newChat.id
+      setMessages((prev) => [...prev, { content: prompt, is_user: true }])
+      saveMessage(prompt, true, currentChatId)
+    }
+
     setLoading(true)
-    setShowResults(true)
     let response
 
     if (prompt !== undefined) {
       response = await runChat(prompt)
-      setRecentPrompt(prompt)
+      setMessages((prev) => [...prev, { content: response, is_user: false }])
+      saveMessage(response, false, currentChatId)
     } else {
       setPrevPrompts((prev) => [...prev, input])
-      setRecentPrompt(input)
       response = await runChat(input)
+      setMessages((prev) => [...prev, { content: response, is_user: false }])
+      saveMessage(response, false, currentChatId)
     }
 
     try {
@@ -71,7 +108,6 @@ const ContextProvider = (props) => {
       console.error('Error while running chat:', error)
     } finally {
       setLoading(false)
-      setInput('')
     }
   }
 
@@ -79,14 +115,14 @@ const ContextProvider = (props) => {
     prevPrompts,
     setPrevPrompts,
     onSent,
-    setRecentPrompt,
-    recentPrompt,
     input,
     setInput,
-    showResults,
     loading,
     resultData,
-    newChat
+    newChat,
+    messages,
+    setMessages,
+    setChat
   }
 
   return <Context.Provider value={contextValue}>{props.children}</Context.Provider>

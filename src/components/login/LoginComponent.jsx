@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import Logo from '../../assets/Logo.png'
+import { useAuth } from '../../contexts/AuthContext.jsx'
 import { supabase } from '../../utils/supabase.js'
 import FloatingLabelInput from './FloatingLabelInput'
 
 const LoginComponent = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const { user } = useAuth()
+
+  if (user) {
+    window.location.href = '/'
+  }
 
   const handleLogin = async () => {
     try {

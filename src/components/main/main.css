@@ -1,7 +1,7 @@
 .main {
   flex: 1;
   min-height: 100vh;
-  padding-bottom: 25vh;
+  /* padding-bottom: 25vh; */
   position: relative;
 }
 code {
@@ -109,8 +109,10 @@ code {
 }
 .result {
   padding: 0px 5%;
-  max-height: 70vh;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse; /* Đảo ngược thứ tự hiển thị */
+  max-height: 80vh; /* Giới hạn chiều cao */
+  overflow-y: auto;
 }
 .result::-webkit-scrollbar {
   display: none;
