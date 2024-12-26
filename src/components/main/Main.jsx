@@ -76,7 +76,7 @@ const Main = () => {
             </div>
           </>
         ) : (
-          <div className="result">
+          <div className="result pb-5">
             {loading && (
               <>
                 <div className="loader">

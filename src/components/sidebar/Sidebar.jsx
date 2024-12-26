@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
+import { loadCacheFromOldChat } from '../../config/Gemini'
 import { useAuth } from '../../contexts/AuthContext'
 import { Context } from '../../contexts/Context'
 import { supabase } from '../../utils/supabase'
@@ -47,8 +48,8 @@ const Sidebar = () => {
       .select('*')
       .eq('chat_id', chatId)
       .order('created_at', { ascending: true })
-    console.log(data)
-    setMessages(data || [])
+    setMessages(data)
+    loadCacheFromOldChat(data)
   }
 
   return (
@@ -75,7 +76,7 @@ const Sidebar = () => {
           {extended ? (
             <div className="recent">
               <p className="recent-title">Recent</p>
-              {chats.map((chat) => {
+              {chats?.map((chat) => {
                 return (
                   <div
                     key={chat.id}
