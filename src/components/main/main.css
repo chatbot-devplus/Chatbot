@@ -39,7 +39,7 @@ ol li .pre-container button {
   overflow-x: auto;
   white-space: nowrap;
 }
-.content p,
+.content p, ul, ol 
 li {
   max-width: 900px;
   word-wrap: break-word;
