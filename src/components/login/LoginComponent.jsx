@@ -30,39 +30,6 @@ const LoginComponent = () => {
         return
       }
 
-      const user = await supabase.auth.getUser()
-
-      if (!user.error) {
-        const { id, email, user_metadata } = user.data.user
-        const full_name = user_metadata.full_name
-        const avatar_url = user_metadata.avatar_url
-
-        // Kiểm tra và lưu thông tin người dùng vào Supabase
-        const { data: existingUser, error: fetchError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', id)
-          .single()
-
-        if (fetchError) {
-          setError(fetchError || 'Error checking user existence')
-        }
-
-        if (!existingUser) {
-          const { error: insertError } = await supabase.from('users').insert([
-            {
-              id,
-              email,
-              full_name,
-              avatar_url
-            }
-          ])
-
-          if (insertError) {
-            setError(insertError || 'Error saving user to database')
-          }
-        }
-      }
     } catch (err) {
       setError(err.message || 'An unexpected error occurred. Please try again.')
     } finally {

@@ -18,6 +18,28 @@ export const AuthProvider = ({ children }) => {
         setUser(userMetadata)
         localStorage.setItem('user', JSON.stringify(userMetadata))
       }
+
+      // Kiểm tra và lưu thông tin người dùng vào Supabase
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', data.session.user.id)
+        .single()
+
+      const { id, email, full_name, avatar_url } = data.session.user.user_metadata
+
+      console.log(data.session.user.user_metadata)
+
+      if (!existingUser) {
+        await supabase.from('users').insert([
+          {
+            id,
+            email,
+            full_name,
+            avatar_url
+          }
+        ])
+      }
     }
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
