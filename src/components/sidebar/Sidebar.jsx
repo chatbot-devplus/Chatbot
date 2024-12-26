@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
 import { Context } from '../../contexts/Context'
-import './sidebar.css'
 import { supabase } from '../../utils/supabase'
+import './sidebar.css'
 const Sidebar = () => {
   const [extended, setExtended] = useState(false)
   const { onSent, prevPrompts, setRecentPrompt, newChat } = useContext(Context)
@@ -26,14 +26,13 @@ const Sidebar = () => {
             setExtended((prev) => !prev)
           }}
         />
-        <div className="new-chat">
-          <img
-            src={assets.plus_icon}
-            alt=""
-            onClick={() => {
-              newChat()
-            }}
-          />
+        <div
+          className="new-chat"
+          onClick={() => {
+            newChat()
+          }}
+        >
+          <img src={assets.plus_icon} alt="" />
           {extended ? <p>New Chat</p> : null}
         </div>
         {extended ? (

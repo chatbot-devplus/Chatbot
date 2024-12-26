@@ -1,18 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const MODEL_NAME = 'gemini-1.0-pro'
+const MODEL_NAME = 'gemini-2.0-flash-exp'
 const API_KEY = import.meta.env.VITE_DOTENV_KEY
 async function runChat(prompt) {
   const genAI = new GoogleGenerativeAI(API_KEY)
   const model = genAI.getGenerativeModel({ model: MODEL_NAME })
-
-  const generationConfig = {
-    maxOutputTokens: 500
-  }
-
   const chat = model.startChat({
-    history: [],
-    generationConfig
+    history: []
   })
 
   const result = await chat.sendMessage(prompt)

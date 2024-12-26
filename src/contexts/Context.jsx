@@ -15,6 +15,7 @@ const ContextProvider = (props) => {
     setShowResults(false)
   }
   const onSent = async (prompt) => {
+    setInput('')
     setResultData('')
     setLoading(true)
     setShowResults(true)
@@ -39,7 +40,6 @@ const ContextProvider = (props) => {
             .split('\n')
             .filter((row) => row.trim() !== '')
           let markdownTable = ''
-
           rows.forEach((row, index) => {
             const columns = row
               .split('|')
@@ -64,7 +64,6 @@ const ContextProvider = (props) => {
             markdownResponse += responseArray[i]
           }
         }
-        markdownResponse = markdownResponse.replace(/(\d+\.\s[^.]+?)(?=\d+\.\s|$)/g, '- $1')
         setResultData(markdownResponse)
       }
     } catch (error) {

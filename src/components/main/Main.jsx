@@ -3,15 +3,16 @@ import { useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { assets } from '../../assets/assets'
-import { Context } from '../../contexts/Context'
 import { useAuth } from '../../contexts/AuthContext'
+import { Context } from '../../contexts/Context'
 import './main.css'
+import PreWithCopyButton from './PreWithCopyButton'
+
 const Main = () => {
   const { onSent, recentPrompt, showResults, loading, resultData, setInput, input } =
     useContext(Context)
 
   const { user } = useAuth()
-
   const handleCardClick = (promptText) => {
     setInput(promptText)
   }
@@ -40,11 +41,9 @@ const Main = () => {
               </div>
               <div
                 className="card"
-                onClick={() =>
-                  handleCardClick('Explain the process of photosynthesis in simple terms')
-                }
+                onClick={() => handleCardClick('Weather today in Da Nang on December 26, 2024')}
               >
-                <p>Explain the process of photosynthesis in simple terms </p>
+                <p>Weather today in Da Nang on December 26, 2024</p>
                 <img src={assets.message_icon} alt="" />
               </div>
               <div
@@ -59,12 +58,10 @@ const Main = () => {
               <div
                 className="card"
                 onClick={() => {
-                  handleCardClick(
-                    'What are some essential skills for becoming a front-end developer?'
-                  )
+                  handleCardClick('Tạo cho tôi bảng tuần hoàn nguyên tố hóa học')
                 }}
               >
-                <p>What are some essential skills for becoming a front-end developer?</p>
+                <p>Tạo cho tôi bảng tuần hoàn nguyên tố hóa học</p>
                 <img src={assets.code_icon} alt="" />
               </div>
             </div>
@@ -84,9 +81,29 @@ const Main = () => {
                   <hr />
                 </div>
               ) : (
-                <ReactMarkdown remarkPlugins={[remarkGfm]} className="content">
-                  {resultData}
-                </ReactMarkdown>
+                <>
+                  {resultData.includes('pre>') ? (
+                    <PreWithCopyButton content={resultData} />
+                  ) : (
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      className="content"
+                      components={{
+                        code({  inline, className, children, ...props }) {
+                          return !inline ? (
+                            <PreWithCopyButton content={String(children).trim()} />
+                          ) : (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          )
+                        }
+                      }}
+                    >
+                      {resultData}
+                    </ReactMarkdown>
+                  )}
+                </>
               )}
             </div>
           </div>
