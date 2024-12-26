@@ -28,7 +28,7 @@ const Main = () => {
         <img src={user.picture} alt="avatar" />
       </div>
       <div className="main-container">
-        {messages.length == 0 ? (
+        {messages.length === 0 ? (
           <>
             <div className="greet">
               <p>
