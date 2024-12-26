@@ -34,14 +34,15 @@ ol li .pre-container button {
   max-width: 900px;
   margin: auto;
 }
-.content{
+.content {
   max-width: 900px;
   overflow-x: auto;
   white-space: nowrap;
 }
-.content p,li  {
+.content p,
+li {
   max-width: 900px;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   white-space: normal;
 }
 .main-container .greet {

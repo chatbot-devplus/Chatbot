@@ -89,7 +89,7 @@ const Main = () => {
                       remarkPlugins={[remarkGfm]}
                       className="content"
                       components={{
-                        code({  inline, className, children, ...props }) {
+                        code({ inline, className, children, ...props }) {
                           return !inline ? (
                             <PreWithCopyButton content={String(children).trim()} />
                           ) : (
