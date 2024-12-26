@@ -1,15 +1,22 @@
 .main {
   flex: 1;
-  min-height: 100vh;
-  padding-bottom: 25vh;
   position: relative;
 }
 code {
   font-family: Consolas, 'courier new';
-  color: crimson;
-  background-color: #f1f1f1;
   padding: 2px;
   font-size: 105%;
+}
+pre {
+  padding-left: 1.5rem;
+  padding-top: 0.25rem;
+  color: #df3079 !important ;
+}
+ul li .pre-container button {
+  display: none !important ;
+}
+ol li .pre-container button {
+  display: none !important ;
 }
 .main .nav {
   display: flex;
@@ -26,6 +33,17 @@ code {
 .main-container {
   max-width: 900px;
   margin: auto;
+}
+.content {
+  max-width: 900px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.content p, ul, ol 
+li {
+  max-width: 900px;
+  word-wrap: break-word;
+  white-space: normal;
 }
 .main-container .greet {
   margin: 50px 0px;
@@ -108,7 +126,6 @@ code {
   font-weight: 300;
 }
 .result {
-  padding: 0px 5%;
   max-height: 70vh;
   overflow-y: scroll;
 }
@@ -136,7 +153,7 @@ code {
 .result-data {
   display: flex;
   align-items: start;
-  gap: 20px;
+  /* gap: 20px; */
 }
 .loader {
   width: 100%;
@@ -154,8 +171,14 @@ code {
   animation: loader 4s infinite linear;
 }
 ol {
-  list-style: decimal;
-  padding-left: 2rem;
+  list-style: decimal !important;
+  padding-left: 2rem !important;
+}
+ul {
+  list-style: circle !important;
+  margin-left: 30px !important;
+}
+li {
 }
 @keyframes loader {
   0% {
@@ -173,11 +196,11 @@ ol {
 } */
 
 .content table {
+  margin-top: 15px !important;
   border-spacing: 0 !important;
   border-collapse: collapse !important;
   border-color: inherit !important;
   display: block !important;
-  margin: 0 auto !important;
   width: 100% !important;
   max-width: 100% !important;
   overflow: auto !important;
@@ -193,4 +216,13 @@ ol {
   border-style: solid !important;
   border-width: 2px !important;
   padding: 0.5rem;
+}
+.content thead {
+  background-color: #bdd6ff;
+}
+span {
+  font-size: 18px;
+  line-height: 1.5;
+  display: inline-block;
+  text-align: center;
 }
